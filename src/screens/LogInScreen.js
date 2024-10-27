@@ -69,7 +69,7 @@ const LogInScreen = ({ navigation }) => {
           <CustomButton
             title="Log In"
             onPress={() => {
-              /* Add your login logic here */
+              navigation.replace('MainTabs');
             }}
           />
         </View>
