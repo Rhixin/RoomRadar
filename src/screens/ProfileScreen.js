@@ -1,179 +1,293 @@
-// src/screens/ProfileScreen.js
 import React from 'react';
-import { View, Text, Image, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
+import { 
+  View, 
+  Text, 
+  Image, 
+  TouchableOpacity, 
+  ScrollView, 
+  StyleSheet, 
+  Platform,
+  StatusBar
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 const ProfileScreen = () => {
-  const [userProfile, setUserProfile] = React.useState({
-    name: 'John Doe',
-    bio: 'Software Developer | Coffee Lover | Tech Enthusiast',
-    posts: 42,
-    followers: 1234,
-    following: 890,
-  });
+  const menuItems = [
+    {
+      icon: 'person-outline',
+      label: 'Edit Profile',
+      iconColor: '#007AFF',
+      iconBg: '#E5F2FF'
+    },
+    {
+      icon: 'key-outline',
+      label: 'Change Password',
+      iconColor: '#FF9500',
+      iconBg: '#FFF4E5'
+    },
+    {
+      icon: 'card-outline',
+      label: 'Payment',
+      iconColor: '#34C759',
+      iconBg: '#E8F8ED'
+    },
+    {
+      icon: 'star-outline',
+      label: 'My Reviews',
+      iconColor: '#5856D6',
+      iconBg: '#EEEEFF'
+    },
+    {
+      icon: 'settings-outline',
+      label: 'Settings',
+      iconColor: '#8E8E93',
+      iconBg: '#F2F2F7'
+    }
+  ];
+
+  const bugReportTypes = [
+    {
+      icon: 'bug-outline',
+      label: 'Report Technical Issue',
+      description: 'Having technical problems? Let us know.',
+      color: '#FF3B30'
+    },
+    {
+      icon: 'warning-outline',
+      label: 'Report Content',
+      description: 'Found inappropriate content?',
+      color: '#FF9500'
+    },
+    {
+      icon: 'help-circle-outline',
+      label: 'Feature Request',
+      description: 'Suggest new features or improvements.',
+      color: '#34C759'
+    }
+  ];
+
+  const MenuItem = ({ icon, label, iconColor, iconBg }) => (
+    <TouchableOpacity style={styles.menuItem}>
+      <View style={[styles.iconContainer, { backgroundColor: iconBg }]}>
+        <Ionicons name={icon} size={22} color={iconColor} />
+      </View>
+      <Text style={styles.menuText}>{label}</Text>
+      <Ionicons name="chevron-forward" size={20} color="#C7C7CC" />
+    </TouchableOpacity>
+  );
+
+  const BugReportItem = ({ icon, label, description, color }) => (
+    <TouchableOpacity style={styles.bugReportItem}>
+      <View style={[styles.bugReportIcon, { backgroundColor: `${color}15` }]}>
+        <Ionicons name={icon} size={24} color={color} />
+      </View>
+      <View style={styles.bugReportContent}>
+        <Text style={styles.bugReportLabel}>{label}</Text>
+        <Text style={styles.bugReportDescription}>{description}</Text>
+      </View>
+      <Ionicons name="chevron-forward" size={20} color="#C7C7CC" />
+    </TouchableOpacity>
+  );
 
   return (
-    <View style={styles.container}>
-      {/* Profile Header */}
-      <View style={styles.profileHeader}>
-        <Image
-          source={{ uri: 'https://via.placeholder.com/100' }}
-          style={styles.profileImage}
-        />
-        <View style={styles.profileInfo}>
-          <Text style={styles.profileName}>{userProfile.name}</Text>
-          <Text style={styles.profileBio}>{userProfile.bio}</Text>
+    <SafeAreaView style={styles.safeArea} edges={['top']}>
+      <StatusBar barStyle="dark-content" />
+      <ScrollView style={styles.container}>
+        {/* Header */}
+        <View style={styles.header}>
+          <View style={styles.contentWrapper}>
+            <View style={styles.profileSection}>
+              <View style={styles.userInfo}>
+                <Text style={styles.userName}>Zhazted Valles</Text>
+                <Text style={styles.userLocation}>Computer Science Student</Text>
+              </View>
+              <Image
+                source={{
+                  uri: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
+                }}
+                style={styles.profileImage}
+              />
+            </View>
+          </View>
         </View>
-      </View>
 
-      {/* Stats */}
-      <View style={styles.statsContainer}>
-        <View style={styles.statItem}>
-          <Text style={styles.statNumber}>{userProfile.posts}</Text>
-          <Text style={styles.statLabel}>Posts</Text>
-        </View>
-        <View style={styles.statItem}>
-          <Text style={styles.statNumber}>{userProfile.followers}</Text>
-          <Text style={styles.statLabel}>Followers</Text>
-        </View>
-        <View style={styles.statItem}>
-          <Text style={styles.statNumber}>{userProfile.following}</Text>
-          <Text style={styles.statLabel}>Following</Text>
-        </View>
-      </View>
+        <View style={styles.contentWrapper}>
+          {/* Menu Items */}
+          <View style={styles.menuContainer}>
+            {menuItems.map((item, index) => (
+              <MenuItem key={index} {...item} />
+            ))}
 
-      {/* Edit Profile Button */}
-      <TouchableOpacity style={styles.editButton}>
-        <Text style={styles.editButtonText}>Edit Profile</Text>
-      </TouchableOpacity>
+            {/* Separate Logout Button */}
+            <TouchableOpacity style={styles.logoutButton}>
+              <View style={[styles.iconContainer, { backgroundColor: '#FFE5E5' }]}>
+                <Ionicons name="log-out-outline" size={22} color="#FF3B30" />
+              </View>
+              <Text style={styles.logoutText}>Log Out</Text>
+              <Ionicons name="chevron-forward" size={20} color="#C7C7CC" />
+            </TouchableOpacity>
+          </View>
 
-      {/* Settings Options */}
-      <ScrollView style={styles.settingsList}>
-        {['Account Settings', 'Privacy', 'Notifications', 'Help & Support', 'About'].map((item) => (
-          <TouchableOpacity key={item} style={styles.settingsItem}>
-            <Text style={styles.settingsItemText}>{item}</Text>
-          </TouchableOpacity>
-        ))}
+          {/* Bug Report Section */}
+          <View style={styles.bugReportContainer}>
+            <View style={styles.bugReportHeader}>
+              <Text style={styles.sectionTitle}>Report a Bug</Text>
+              <Text style={styles.sectionSubtitle}>Help us improve your experience</Text>
+            </View>
+            {bugReportTypes.map((item, index) => (
+              <BugReportItem key={index} {...item} />
+            ))}
+          </View>
+        </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  safeArea: {
+    backgroundColor: '#CBDCEB',
     flex: 1,
-    backgroundColor: '#fff',
+  },
+  container: {
+    backgroundColor: '#CBDCEB',
+  },
+  contentWrapper: {
+    width: '92%',
+    alignSelf: 'center',
   },
   header: {
+    padding: 20,
+    backgroundColor: '#FFF',
+    marginBottom: 20,
+    width: '100%',
+  },
+  profileSection: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
   },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  headerButton: {
-    padding: 8,
-    backgroundColor: '#f0f0f0',
-    borderRadius: 20,
-  },
-  content: {
+  userInfo: {
     flex: 1,
   },
-  post: {
-    padding: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
+  userName: {
+    fontSize: 24,
+    fontWeight: '600',
+    color: '#000',
+    marginBottom: 4,
   },
-  postHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 10,
-  },
-  author: {
-    fontWeight: 'bold',
-  },
-  timestamp: {
+  userLocation: {
+    fontSize: 15,
     color: '#666',
-  },
-  postContent: {
-    marginBottom: 10,
-  },
-  postActions: {
-    flexDirection: 'row',
-    gap: 15,
-  },
-  actionButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 5,
-  },
-  profileHeader: {
-    padding: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
   },
   profileImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    marginRight: 15,
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    marginLeft: 12,
+    borderWidth: 3,
+    borderColor: '#FFF',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
-  profileInfo: {
-    flex: 1,
+  menuContainer: {
+    backgroundColor: '#FFF',
+    borderRadius: 12,
+    overflow: 'hidden',
+    marginBottom: 20,
   },
-  profileName: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 5,
-  },
-  profileBio: {
-    color: '#666',
-  },
-  statsContainer: {
+  menuItem: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    paddingVertical: 15,
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderColor: '#eee',
-  },
-  statItem: {
     alignItems: 'center',
+    paddingVertical: 25,
+    paddingHorizontal: 16,
+    backgroundColor: '#FFF',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: '#E5E5EA',
   },
-  statNumber: {
+  iconContainer: {
+    width: 36,
+    height: 36,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12,
+  },
+  menuText: {
+    flex: 1,
+    fontSize: 16,
+    color: '#000',
+    fontWeight: '400',
+  },
+  logoutButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 25,
+    paddingHorizontal: 16,
+    marginTop: 8,
+  },
+  logoutText: {
+    flex: 1,
+    fontSize: 16,
+    color: '#FF3B30',
+    fontWeight: '400',
+  },
+  bugReportContainer: {
+    backgroundColor: '#FFF',
+    borderRadius: 12,
+    overflow: 'hidden',
+    marginBottom: 20,
+  },
+  bugReportHeader: {
+    padding: 16,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: '#E5E5EA',
+  },
+  sectionTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: '600',
+    color: '#000',
+    marginBottom: 4,
   },
-  statLabel: {
+  sectionSubtitle: {
+    fontSize: 14,
     color: '#666',
   },
-  editButton: {
-    margin: 15,
-    padding: 12,
-    backgroundColor: '#007AFF',
-    borderRadius: 25,
+  bugReportItem: {
+    flexDirection: 'row',
     alignItems: 'center',
+    padding: 16,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: '#E5E5EA',
   },
-  editButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
+  bugReportIcon: {
+    width: 44,
+    height: 44,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12,
   },
-  settingsList: {
+  bugReportContent: {
     flex: 1,
   },
-  settingsItem: {
-    padding: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
-  },
-  settingsItemText: {
+  bugReportLabel: {
     fontSize: 16,
+    fontWeight: '500',
+    color: '#000',
+    marginBottom: 2,
   },
+  bugReportDescription: {
+    fontSize: 14,
+    color: '#666',
+  }
 });
-
 
 export default ProfileScreen;
